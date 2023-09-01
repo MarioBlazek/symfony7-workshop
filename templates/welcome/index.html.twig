@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register{% endblock %}
+
+{% block body %}
+<br/>
+    <h2 class="h2 mb-3">Hello {{ app.user.email }} 👋</h2>
+{{ component('UserCount') }}
+{% endblock %}

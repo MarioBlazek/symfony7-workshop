@@ -1,0 +1,37 @@
+version: '3.7'
+
+volumes:
+    postgres-data: {}
+
+services:
+    frontend:
+        build:
+            context: 'infrastructure/docker/services/php'
+            target: frontend
+            args:
+                - USER_ID=${UID:-1000}
+        depends_on:
+            - postgres
+        volumes:
+            - ".:/home/app/application:cached"
+            - "${COMPOSER_CACHE_DIR:-~/.cache/composer}:/home/app/.composer/cache"
+
+    cron:
+        build:
+            context: 'infrastructure/docker/services/php'
+            target: cron
+            args:
+                - USER_ID=${UID:-1000}
+        depends_on:
+            - postgres
+        volumes:
+            - ".:/home/app/application:cached"
+
+    postgres:
+        build: 'infrastructure/docker/services/postgres'
+        environment:
+            POSTGRES_PASSWORD: sf7-ws
+            POSTGRES_USER: sf7-ws
+            POSTGRES_DB: sf7-ws
+        volumes:
+            - postgres-data:/var/lib/postgresql/data
