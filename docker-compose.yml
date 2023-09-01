@@ -12,6 +12,8 @@ services:
                 - USER_ID=${UID:-1000}
         depends_on:
             - postgres
+        ports:
+            - '8000:80'
         volumes:
             - ".:/home/app/application:cached"
             - "${COMPOSER_CACHE_DIR:-~/.cache/composer}:/home/app/.composer/cache"
